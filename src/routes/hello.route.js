@@ -36,6 +36,6 @@ export default async (app, opts) => {
       reply.code(400);
       return { error: "Name is required" };
     }
-    return { hello: request.params.name };
+    return { hello: name };
   });
 };

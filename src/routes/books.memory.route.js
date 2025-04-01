@@ -4,8 +4,8 @@ const books = [];
 async function booksMemoryRoute(fastify, options) {
 
   fastify.get('/', async (request, reply) => {
-    //  ⚙️🔥 write your code here ⚙️🔥
-    reply.code(404).send({ error: 'Not implemented' });
+    return books;
+    
   });
 
   const getBookSchema = {
@@ -18,8 +18,13 @@ async function booksMemoryRoute(fastify, options) {
   };
 
   fastify.get('/:id', { schema: getBookSchema }, async (request, reply) => {
-    //  ⚙️🔥 write your code here ⚙️🔥
-    reply.code(404).send({ error: 'Not implemented' });
+    var { id } = request.params;
+    if (isNaN(id) || id < 0 ||books.length<=id) {
+      reply.code(400);
+      console.log(id)
+      return { error: "book doesn't exist" };
+    };
+    reply.code(200).send(books[id]);
   });
 
   const createBookSchema = {
@@ -34,8 +39,8 @@ async function booksMemoryRoute(fastify, options) {
   };
 
   fastify.post('/', { schema: createBookSchema }, async (request, reply) => {
-    //  ⚙️🔥 write your code here ⚙️🔥
-    reply.code(404).send({ error: 'Not implemented' });
+    books.push(request.body)
+    reply.code(200).send(request.body);
   });
 
   const updateBookSchema = {
@@ -56,8 +61,14 @@ async function booksMemoryRoute(fastify, options) {
   };
 
   fastify.put('/:id', { schema: updateBookSchema }, async (request, reply) => {
-    //  ⚙️🔥 write your code here ⚙️🔥
-    reply.code(404).send({ error: 'Not implemented' });
+    var { id } = request.params;
+    if (isNaN(id) || id < 0 ||books.length<=id) {
+      reply.code(400);
+      console.log(id)
+      return { error: "book doesn't exist" };
+    };
+    books[id] = request.body
+    reply.code(200).send( books[id] );
   });
 
   const deleteBookSchema = {
@@ -69,8 +80,14 @@ async function booksMemoryRoute(fastify, options) {
     },
   };
   fastify.delete('/:id', { schema: deleteBookSchema }, async (request, reply) => {
-    //  ⚙️🔥 write your code here ⚙️🔥
-    reply.code(404).send({ error: 'Not implemented' });
+    var { id } = request.params;
+    if (isNaN(id) || id < 0 ||books.length<=id) {
+      reply.code(400);
+      console.log(id)
+      return { error: "book doesn't exist" };
+    };
+    books.splice(id,1)
+    reply.code(200).send('Exterminated');
   });
 }
 
